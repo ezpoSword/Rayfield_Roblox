@@ -54,7 +54,7 @@ local Window = Rayfield:CreateWindow({
 
 Rayfield:Notify({
    Title = "welcome",
-   Content = "Cheat Loaded and",
+   Content = "Cheat Loaded and welcome",
    Duration = 6.5,
    Image = "rewind",
 })
