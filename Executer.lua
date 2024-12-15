@@ -61,7 +61,7 @@ Rayfield:Notify({
 
 local Tab = Window:CreateTab("Home", "Home")
 
-local Label = Tab:CreateLabel("Home", 4483362458, Color3.fromRGB(255, 255, 255), false) -- Title, Icon, Color, IgnoreTheme
+
 
 
 
@@ -137,47 +137,75 @@ end)
    end,
 })
 
+local SliderValue = 10 -- Kaydırıcı değeri başlangıçta 10 olarak ayarlanıyor
 
-
+-- Slider oluşturma
 local Slider = Tab:CreateSlider({
-   Name = "Speed", 
-   Range = {0, 500}, 
+   Name = "Speed",
+   Range = {0, 500},
    Increment = 10,
-   Suffix = "Speed", 
-   CurrentValue = 10,
+   Suffix = "Speed",
+   CurrentValue = SliderValue,
    Flag = "Slider1",
    Callback = function(Value)
-       -- Oyuncunun hızını ayarla
+       SliderValue = Value -- Slider'dan alınan değeri güncelle
+   end,
+})
+
+-- Sürekli hız güncellemeleri için bir döngü başlat
+task.spawn(function()
+   while true do
        local player = game.Players.LocalPlayer
        local character = player.Character or player.CharacterAdded:Wait()
        local humanoid = character:FindFirstChild("Humanoid")
        
        if humanoid then
-           humanoid.WalkSpeed = Value -- Hızı slider değerine eşitle
+           humanoid.WalkSpeed = SliderValue -- Kaydırıcı değerine göre hızı ayarla
        end
-   end,
-})
+       task.wait(0.1) -- Döngüyü çok sık çalıştırmamak için bekleme süresi ekle
+   end
+end)
 
 
+local JumpPowerValue = 10 -- Kaydırıcı başlangıç değeri
 
+-- Slider oluşturma
 local Slider = Tab:CreateSlider({
-   Name = "Jump Power", 
-   Range = {0, 500}, 
+   Name = "Jump Power",
+   Range = {0, 500},
    Increment = 10,
-   Suffix = "Jump Power", 
-   CurrentValue = 10,
-   Flag = "Slider1",
+   Suffix = "Jump Power",
+   CurrentValue = JumpPowerValue,
+   Flag = "Slider2",
    Callback = function(Value)
+       JumpPowerValue = Value -- Slider değerini güncelle
        local player = game.Players.LocalPlayer
        local character = player.Character or player.CharacterAdded:Wait()
        local humanoid = character:WaitForChild("Humanoid")
        
        if humanoid then
-           humanoid.UseJumpPower = true -- JumpPower'ın etkin olduğundan emin ol
-           humanoid.JumpPower = Value  -- Zıplama gücünü slider değerine ayarla
+           humanoid.UseJumpPower = true -- JumpPower kullanımını etkinleştir
+           humanoid.JumpPower = JumpPowerValue -- Yeni zıplama gücünü uygula
        end
    end,
 })
+
+-- Oyuncunun manuel olarak zıplamasını sağla
+local UserInputService = game:GetService("UserInputService")
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+   if gameProcessed then return end -- Oyun tarafından işlenmiş girdileri yok say
+   if input.KeyCode == Enum.KeyCode.Space then -- Space tuşuna basıldığında
+       local player = game.Players.LocalPlayer
+       local character = player.Character
+       if character then
+           local humanoid = character:FindFirstChild("Humanoid")
+           if humanoid then
+               humanoid:ChangeState(Enum.HumanoidStateType.Jumping) -- Oyuncuyu zıplat
+           end
+       end
+   end
+end)
+
 
 
 
