@@ -1,4 +1,16 @@
 local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/ezpoSword/Rayfield_Roblox/refs/heads/main/RayfieldMenuCode-No-tWorking'))()
+
+
+wait(10)
+Rayfield:Notify({
+   Title = "thanks",
+   Content = "I hope you like it, we worked hard :) have a nice day",
+   Duration = 6.5,
+   Image = "rewind",
+})
+
+
+
 local gameId = game.PlaceId
 
 local windowName = "FGFS | Game"
