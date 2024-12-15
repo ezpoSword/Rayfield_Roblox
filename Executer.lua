@@ -13,10 +13,14 @@ Rayfield:Notify({
 
 local gameId = game.PlaceId
 
+
 local windowName = "FGFS | Game"
 if gameId == 730951264 then
-   windowName = "FGFS | The Maze"
+    windowName = "FGFS | The Maze"
+elseif gameId == 5777099015 then
+    windowName = "FGFS | Cheese Escape"
 end
+
 
 local Window = Rayfield:CreateWindow({
    Name = windowName,
@@ -110,7 +114,8 @@ end)
 local Button = Tab:CreateButton({
    Name = "Infinite Jump",
    Callback = function()
-   local player = game.Players.LocalPlayer
+         
+local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoid = character:WaitForChild("Humanoid")
 local userInputService = game:GetService("UserInputService")
@@ -356,40 +361,40 @@ local Dropdown = Tab:CreateDropdown({
 
 local Tab = Window:CreateTab("ESP", "rewind")
 
--- Toggle oluşturma
+
+
 -- Toggle oluşturma
 local Toggle = Tab:CreateToggle({
-   Name = game.PlaceId == 730951264 and "Show ESP | THE MAZE mode" or "Show ESP",  -- Oyun ID'sine göre toggle adı değişir
-   CurrentValue = false,  -- Başlangıçta toggle kapalı
+   Name = (game.PlaceId == 730951264 and "Show ESP | THE MAZE mode") or 
+          (game.PlaceId == 5777099015 and "Show ESP | Cheese Escape Mode") or 
+          "Show ESP", -- Oyun ID'sine göre toggle adı değişir
+   CurrentValue = false, -- Başlangıçta toggle kapalı
    Flag = "Toggle1", -- Konfigürasyon için flag
    Callback = function(Value)
-      -- Toggle açıldığında veya kapandığında ESP'yi göster ya da gizle
       if Value then
          -- ESP'yi aç
          game:GetService("Players").PlayerAdded:Connect(function(player)
             player.CharacterAdded:Connect(function(character)
                if character and character:FindFirstChild("Head") then
-                  -- ESP kutusunu oluştur
                   local head = character.Head
                   local box = Instance.new("BillboardGui")
                   box.Parent = head
                   box.Adornee = head
-                  box.Size = UDim2.new(0, 100, 0, 50)  -- Kutu boyutu
-                  box.StudsOffset = Vector3.new(0, 2, 0)  -- Kutu yukarıya doğru offset
-                  box.AlwaysOnTop = true  -- Kutu her zaman üstte görünsün
+                  box.Size = UDim2.new(0, 100, 0, 50)
+                  box.StudsOffset = Vector3.new(0, 2, 0)
+                  box.AlwaysOnTop = true
 
-                  -- İsim etiketini ekle
                   local label = Instance.new("TextLabel")
                   label.Parent = box
                   label.Size = UDim2.new(1, 0, 1, 0)
-                  label.BackgroundTransparency = 1  -- Arka planı şeffaf yap
-                  label.Text = player.Name  -- Oyuncunun ismi
-                  label.TextColor3 = Color3.fromRGB(0, 255, 0)  -- İsim rengi
-                  label.TextStrokeTransparency = 0.8  -- Metnin etrafında bir çizgi
+                  label.BackgroundTransparency = 1
+                  label.Text = player.Name
+                  label.TextColor3 = Color3.fromRGB(0, 255, 0) -- Oyuncu ismi rengi (yeşil)
+                  label.TextStrokeTransparency = 0.8
                end
             end)
          end)
-         
+
          -- Mevcut oyuncuların ESP'sini de ekle
          for _, player in pairs(game:GetService("Players"):GetPlayers()) do
             if player.Character and player.Character:FindFirstChild("Head") then
@@ -411,9 +416,9 @@ local Toggle = Tab:CreateToggle({
             end
          end
 
-         -- Eğer oyun THE MAZE modunda ise, sadece 'TheCajoler' ve 'TheOrotund' canavarlarına ESP ekle
+         -- Oyun özel ESP işlevleri
          if game.PlaceId == 730951264 then
-            -- Canavar isimleri
+            -- THE MAZE canavarları
             local monsterNames = {"TheCajoler", "TheOrotund"}
             
             for _, monster in pairs(game.Workspace:GetChildren()) do
@@ -430,33 +435,64 @@ local Toggle = Tab:CreateToggle({
                   label.Parent = box
                   label.Size = UDim2.new(1, 0, 1, 0)
                   label.BackgroundTransparency = 1
-                  label.Text = monster.Name  -- Canavarın ismi
-                  label.TextColor3 = Color3.fromRGB(255, 0, 0)  -- Canavar ismi rengi (kırmızı)
+                  label.Text = monster.Name
+                  label.TextColor3 = Color3.fromRGB(255, 0, 0) -- Kırmızı renk
                   label.TextStrokeTransparency = 0.8
                end
             end
+         elseif game.PlaceId == 5777099015 then
+            -- Cheese Escape'de "Mouse" modeli
+            local mouseModel = game.Workspace:FindFirstChild("Mouse")
+            if mouseModel and mouseModel:FindFirstChild("Head") then
+               local head = mouseModel.Head
+               local box = Instance.new("BillboardGui")
+               box.Parent = head
+               box.Adornee = head
+               box.Size = UDim2.new(0, 100, 0, 50)
+               box.StudsOffset = Vector3.new(0, 2, 0)
+               box.AlwaysOnTop = true
+
+               local label = Instance.new("TextLabel")
+               label.Parent = box
+               label.Size = UDim2.new(1, 0, 1, 0)
+               label.BackgroundTransparency = 1
+               label.Text = mouseModel.Name
+               label.TextColor3 = Color3.fromRGB(255, 0, 0) -- Kırmızı renk
+               label.TextStrokeTransparency = 0.8
+            end
          end
       else
-         -- Toggle kapalıysa, ESP'yi kaldır
+         -- ESP'yi kaldır
          for _, player in pairs(game:GetService("Players"):GetPlayers()) do
             if player.Character and player.Character:FindFirstChild("Head") then
                local head = player.Character.Head
                local espGui = head:FindFirstChildOfClass("BillboardGui")
                if espGui then
-                  espGui:Destroy()  -- ESP'yi kaldır
+                  espGui:Destroy()
                end
             end
          end
-         
-         -- TheCajoler ve TheOrotund canavarı ESP'sini kaldır
+
          if game.PlaceId == 730951264 then
+            -- THE MAZE canavarlarının ESP'sini kaldır
+            local monsterNames = {"TheCajoler", "TheOrotund"}
             for _, monster in pairs(game.Workspace:GetChildren()) do
-               if table.find({"TheCajoler", "TheOrotund"}, monster.Name) and monster:FindFirstChild("Head") then
+               if table.find(monsterNames, monster.Name) and monster:FindFirstChild("Head") then
                   local head = monster.Head
                   local espGui = head:FindFirstChildOfClass("BillboardGui")
                   if espGui then
-                     espGui:Destroy()  -- Canavar ESP'yi kaldır
+                     espGui:Destroy()
                   end
+               end
+            end
+         elseif game.PlaceId == 5777099015 then
+            -- Cheese Escape "Mouse" modeli ESP'sini kaldır
+            local mouseModel = game.Workspace:FindFirstChild("Mouse")
+            if mouseModel and mouseModel:FindFirstChild("Head") then
+               local head = mouseModel.Head
+               local espGui = head:FindFirstChildOfClass("BillboardGui")
+               if espGui then
+                  espGui:Destroy()
                end
             end
          end
