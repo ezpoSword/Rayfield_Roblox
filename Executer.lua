@@ -61,6 +61,10 @@ Rayfield:Notify({
 
 local Tab = Window:CreateTab("Home", "Home")
 
+local Label = Tab:CreateLabel("Home", 4483362458, Color3.fromRGB(255, 255, 255), false) -- Title, Icon, Color, IgnoreTheme
+
+
+
 
 local Button = Tab:CreateButton({
    Name = "TP - CTRL & Click",
