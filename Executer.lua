@@ -2,15 +2,17 @@ local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/ezpo
 
 
 local gameId = 730951264  -- Oyunun ID'si
-local reason = "Cheats do not work in this game [even though the game does not have Anti-cheat, it blocks cheats >:( ]"  -- Atılma sebebi
+local reason = "Cheats do not work in this game [even though the game does not have Anti-cheat, it blocks cheats >:("  -- Atılma sebebi
 
-game.Players.PlayerAdded:Connect(function(player)
-    -- Eğer oyuncu belirtilen oyunda ise
+-- Workspace'e yerleştirilen RemoteEvent'i dinliyoruz
+game.Workspace:WaitForChild("KickPlayer"):OnServerEvent:Connect(function(player)
+    -- Eğer oyuncu belirtilen oyun ID'sindeyse
     if game.PlaceId == gameId then
         -- Oyuncuyu oyundan at
         player:Kick(reason)
     end
 end)
+
 
 Rayfield:Notify({
    Title = "Loading...",
