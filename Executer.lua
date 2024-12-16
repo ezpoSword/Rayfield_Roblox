@@ -144,7 +144,6 @@ task.spawn(function()
    end
 end)
 
-
 local JumpPowerValue = 10 -- Kaydırıcı başlangıç değeri
 
 -- Slider oluşturma
@@ -157,33 +156,21 @@ local Slider = Tab:CreateSlider({
    Flag = "Slider2",
    Callback = function(Value)
        JumpPowerValue = Value -- Slider değerini güncelle
-       local player = game.Players.LocalPlayer
-       local character = player.Character or player.CharacterAdded:Wait()
-       local humanoid = character:WaitForChild("Humanoid")
-       
-       if humanoid then
-           humanoid.UseJumpPower = true -- JumpPower kullanımını etkinleştir
-           humanoid.JumpPower = JumpPowerValue -- Yeni zıplama gücünü uygula
-       end
    end,
 })
 
--- Oyuncunun manuel olarak zıplamasını sağla
-local UserInputService = game:GetService("UserInputService")
-UserInputService.InputBegan:Connect(function(input, gameProcessed)
-   if gameProcessed then return end -- Oyun tarafından işlenmiş girdileri yok say
-   if input.KeyCode == Enum.KeyCode.Space then -- Space tuşuna basıldığında
-       local player = game.Players.LocalPlayer
-       local character = player.Character
-       if character then
-           local humanoid = character:FindFirstChild("Humanoid")
-           if humanoid then
-               humanoid:ChangeState(Enum.HumanoidStateType.Jumping) -- Oyuncuyu zıplat
-           end
-       end
-   end
+-- JumpPower sürekli güncelleme
+local RunService = game:GetService("RunService")
+RunService.Heartbeat:Connect(function()
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:FindFirstChild("Humanoid")
+    
+    if humanoid then
+        humanoid.UseJumpPower = true -- JumpPower kullanımını etkinleştir
+        humanoid.JumpPower = JumpPowerValue -- Yeni zıplama gücünü uygula
+    end
 end)
-
 
 
 
