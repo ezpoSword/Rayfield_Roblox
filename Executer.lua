@@ -15,11 +15,15 @@ local gameId = game.PlaceId
 
 
 local windowName = "FGFS | Game"
+
 if gameId == 730951264 then
     windowName = "FGFS | The Maze"
 elseif gameId == 5777099015 then
     windowName = "FGFS | Cheese Escape"
+elseif gameId == 893973440 then
+    windowName = "FGFS | Flee the Facility Mode"
 end
+
 
 
 local Window = Rayfield:CreateWindow({
@@ -322,11 +326,11 @@ local Dropdown = Tab:CreateDropdown({
 local Tab = Window:CreateTab("ESP", "rewind")
 
 
-
 -- Toggle oluşturma
 local Toggle = Tab:CreateToggle({
    Name = (game.PlaceId == 730951264 and "Show ESP | THE MAZE mode") or 
-          (game.PlaceId == 5777099015 and "Show ESP | Cheese Escape Mode") or 
+          (game.PlaceId == 5777099015 and "Show ESP | Cheese Escape Mode") or
+          (game.PlaceId == 893973440 and "Show ESP | Flee the Facility Mode") or
           "Show ESP", -- Oyun ID'sine göre toggle adı değişir
    CurrentValue = false, -- Başlangıçta toggle kapalı
    Flag = "Toggle1", -- Konfigürasyon için flag
@@ -420,6 +424,41 @@ local Toggle = Tab:CreateToggle({
                label.TextColor3 = Color3.fromRGB(255, 0, 0) -- Kırmızı renk
                label.TextStrokeTransparency = 0.8
             end
+         elseif game.PlaceId == 893973440 then
+            -- Flee the Facility Mode'da Computer modeli kontrolü
+            local function checkComputers()
+               -- Workspace'teki tüm nesneleri kontrol et
+               for _, model in pairs(game.Workspace:GetChildren()) do
+                  -- Eğer model "Computer" isminde ise
+                  if model.Name == "Computer" then
+                     -- Modelin içinde herhangi bir şey var mı diye kontrol et
+                     for _, child in pairs(model:GetChildren()) do
+                        -- Eğer modelin içinde "Map" veya başka önemli bir nesne varsa
+                        if child:IsA("BasePart") then
+                           -- Modelin üzerine bir blok ekle
+                           local block = Instance.new("Part")
+                           block.Size = Vector3.new(4, 1, 4)
+                           block.Position = model.Position + Vector3.new(0, 5, 0)
+                           block.Anchored = true
+                           block.Parent = model
+                           
+                           local label = Instance.new("TextLabel")
+                           label.Parent = block
+                           label.Size = UDim2.new(1, 0, 1, 0)
+                           label.BackgroundTransparency = 1
+                           label.Text = "Pc here"
+                           label.TextColor3 = Color3.fromRGB(255, 255, 255)
+                           label.TextStrokeTransparency = 0.5
+                        end
+                     end
+                  end
+               end
+            end
+
+            -- Her frame'de computer kontrolü yap
+            game:GetService("RunService").Heartbeat:Connect(function()
+               checkComputers()
+            end)
          end
       else
          -- ESP'yi kaldır
@@ -455,12 +494,20 @@ local Toggle = Tab:CreateToggle({
                   espGui:Destroy()
                end
             end
+         elseif game.PlaceId == 893973440 then
+            -- Flee the Facility'deki Computer modeli takibini kaldır
+            for _, model in pairs(game.Workspace:GetChildren()) do
+               if model.Name == "Computer" then
+                  local block = model:FindFirstChildOfClass("Part")
+                  if block then
+                     block:Destroy()
+                  end
+               end
+            end
          end
       end
    end,
 })
-
-
 
 
 local ESPOffButton = Tab:CreateButton({
