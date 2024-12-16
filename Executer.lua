@@ -1,7 +1,26 @@
 local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/ezpoSword/Rayfield_Roblox/refs/heads/main/RayfieldMenuCode-No-tWorking'))()
 
 
-wait(10)
+local gameId = 730951264  -- Oyunun ID'si
+local reason = "Cheats do not work in this game [even though the game does not have Anti-cheat, it blocks cheats >:( ]"  -- Atılma sebebi
+
+game.Players.PlayerAdded:Connect(function(player)
+    -- Eğer oyuncu belirtilen oyunda ise
+    if game.PlaceId == gameId then
+        -- Oyuncuyu oyundan at
+        player:Kick(reason)
+    end
+end)
+
+Rayfield:Notify({
+   Title = "Loading...",
+   Content = "Loading [10 Second]",
+   Duration = 6.5,
+   Image = "rewind",
+})
+
+Wait("10")
+
 Rayfield:Notify({
    Title = "thanks",
    Content = "I hope you like it, we worked hard :) have a nice day",
