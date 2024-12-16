@@ -10,16 +10,16 @@ if not kickPlayerEvent then
 end
 
 kickPlayerEvent.OnServerEvent:Connect(function()
-    -- Eğer oyun ID'si 893973440 ise, kalan kodları çalıştırma
+    -- Eğer oyun ID'si 893973440 ise, script'i yok et
     if game.PlaceId == targetGameId then
-        return  -- Kod burada sonlanır ve aşağıdaki kod çalışmaz
+        script:Destroy()  -- Script kendisini siler ve çalışmayı durdurur
+        return  -- Kod burada sonlanır, aşağıdaki kodlar çalışmaz
     end
 
-    -- Bu kısım sadece oyun ID'si 893973440 değilse çalışır
-    for _, player in pairs(game.Players:GetPlayers()) do
-        player:Kick("Sebepsiz")
-    end
+    -- Eğer oyun ID'si 893973440 değilse, buradaki kodlar çalışmaya devam eder
+    -- Burada başka herhangi bir işlem yapılmaz
 end)
+
 
 
 
