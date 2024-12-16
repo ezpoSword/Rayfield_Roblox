@@ -1,17 +1,28 @@
 local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/ezpoSword/Rayfield_Roblox/refs/heads/main/RayfieldMenuCode-No-tWorking'))()
 
 
-local gameId = 730951264  -- Oyunun ID'si
-local reason = "Cheats do not work in this game [even though the game does not have Anti-cheat, it blocks cheats >:("  -- Atılma sebebi
+local targetGameId = 893973440  -- Hedef oyun ID'si
 
--- Workspace'e yerleştirilen RemoteEvent'i dinliyoruz
-game.Workspace:WaitForChild("KickPlayer"):OnServerEvent:Connect(function(player)
-    -- Eğer oyuncu belirtilen oyun ID'sindeyse
-    if game.PlaceId == gameId then
-        -- Oyuncuyu oyundan at
-        player:Kick(reason)
+-- Workspace içinde "KickPlayer" RemoteEvent'ini kontrol et ve oluştur
+local kickPlayerEvent = game.Workspace:FindFirstChild("KickPlayer")
+if not kickPlayerEvent then
+    kickPlayerEvent = Instance.new("RemoteEvent")
+    kickPlayerEvent.Name = "KickPlayer"
+    kickPlayerEvent.Parent = game.Workspace
+end
+
+-- RemoteEvent tetiklendiğinde çalışacak fonksiyon
+kickPlayerEvent.OnServerEvent:Connect(function()
+    -- Eğer şu anda oyun, hedef oyun ID'sine eşitse
+    if game.PlaceId == targetGameId then
+        -- Tüm oyuncuları al
+        for _, player in pairs(game.Players:GetPlayers()) do
+            -- Oyuncuyu sebep olmadan at
+            player:Kick()
+        end
     end
 end)
+
 
 
 Rayfield:Notify({
