@@ -113,48 +113,6 @@ end)
 
 
 
-local Button = Tab:CreateButton({
-    Name = " Infınıte Double Jump Button",
-    Callback = function()
-        -- Oyuncunun karakterini al
-        local player = game.Players.LocalPlayer
-        local character = player.Character or player.CharacterAdded:Wait()
-        local humanoid = character:WaitForChild("Humanoid")
-
-        -- Çift zıplama değişkenleri
-        local canDoubleJump = false
-        local doubleJumpActivated = false
-
-        -- Zıplama işlemi
-        local function onJumpRequest()
-            if not doubleJumpActivated then
-                if humanoid:GetState() == Enum.HumanoidStateType.Freefall then
-                    if canDoubleJump then
-                        humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-                        doubleJumpActivated = true
-                    end
-                else
-                    canDoubleJump = true
-                end
-            end
-        end
-
-        -- Humanoid durum değişikliği ile kontrol
-        humanoid.StateChanged:Connect(function(_, newState)
-            if newState == Enum.HumanoidStateType.Landed then
-                canDoubleJump = false
-                doubleJumpActivated = false
-            end
-        end)
-
-        -- Kullanıcı girdi hizmeti
-        local UserInputService = game:GetService("UserInputService")
-        UserInputService.JumpRequest:Connect(onJumpRequest)
-    end,
-})
-
-
-
 
 
 local SliderValue = 10 -- Kaydırıcı değeri başlangıçta 10 olarak ayarlanıyor
