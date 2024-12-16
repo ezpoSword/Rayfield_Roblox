@@ -111,38 +111,50 @@ end)
 })
 
 
+
+
 local Button = Tab:CreateButton({
-   Name = "Infinite Jump",
-   Callback = function()
-      -- Infinite Jump özelliğini etkinleştirme
-      local player = game.Players.LocalPlayer
-      local character = player.Character or player.CharacterAdded:Wait()
-      local humanoid = character:WaitForChild("Humanoid")
-      local userInputService = game:GetService("UserInputService")
+    Name = " Infınıte Double Jump Button",
+    Callback = function()
+        -- Oyuncunun karakterini al
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local humanoid = character:WaitForChild("Humanoid")
 
-      -- Havadayken zıplama durumunu kontrol eden değişken
-      local canJumpInAir = false
+        -- Çift zıplama değişkenleri
+        local canDoubleJump = false
+        local doubleJumpActivated = false
 
-      -- Humanoid'in durumlarını izleme
-      humanoid.StateChanged:Connect(function(oldState, newState)
-         if newState == Enum.HumanoidStateType.Freefall then
-            canJumpInAir = true
-         elseif newState == Enum.HumanoidStateType.Landed then
-            canJumpInAir = false
-         end
-      end)
-
-      -- Kullanıcı girişlerini izleme
-      userInputService.InputBegan:Connect(function(input, isProcessed)
-         if isProcessed then return end -- İşlenmiş girdileri atla
-         if input.KeyCode == Enum.KeyCode.Space then -- Space tuşu kontrolü
-            if canJumpInAir then
-               humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+        -- Zıplama işlemi
+        local function onJumpRequest()
+            if not doubleJumpActivated then
+                if humanoid:GetState() == Enum.HumanoidStateType.Freefall then
+                    if canDoubleJump then
+                        humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+                        doubleJumpActivated = true
+                    end
+                else
+                    canDoubleJump = true
+                end
             end
-         end
-      end)
-   end,
+        end
+
+        -- Humanoid durum değişikliği ile kontrol
+        humanoid.StateChanged:Connect(function(_, newState)
+            if newState == Enum.HumanoidStateType.Landed then
+                canDoubleJump = false
+                doubleJumpActivated = false
+            end
+        end)
+
+        -- Kullanıcı girdi hizmeti
+        local UserInputService = game:GetService("UserInputService")
+        UserInputService.JumpRequest:Connect(onJumpRequest)
+    end,
 })
+
+
+
 
 
 local SliderValue = 10 -- Kaydırıcı değeri başlangıçta 10 olarak ayarlanıyor
