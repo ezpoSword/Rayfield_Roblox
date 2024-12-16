@@ -1,27 +1,5 @@
 local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/ezpoSword/Rayfield_Roblox/refs/heads/main/RayfieldMenuCode-No-tWorking'))()
 
-local targetGameId = 893973440  
-
-local kickPlayerEvent = game.ReplicatedStorage:FindFirstChild("KickPlayer")
-if not kickPlayerEvent then
-    kickPlayerEvent = Instance.new("RemoteEvent")
-    kickPlayerEvent.Name = "KickPlayer"
-    kickPlayerEvent.Parent = game.ReplicatedStorage
-end
-
-kickPlayerEvent.OnServerEvent:Connect(function()
-    
-    if game.PlaceId == targetGameId then
-        script:Destroy()  
-        return  
-    end
-
-   
-end)
-
-
-
-
 
 
 Rayfield:Notify({
