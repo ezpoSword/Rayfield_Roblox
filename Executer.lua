@@ -114,33 +114,36 @@ end)
 local Button = Tab:CreateButton({
    Name = "Infinite Jump",
    Callback = function()
-         
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
-local userInputService = game:GetService("UserInputService")
+      -- Infinite Jump özelliğini etkinleştirme
+      local player = game.Players.LocalPlayer
+      local character = player.Character or player.CharacterAdded:Wait()
+      local humanoid = character:WaitForChild("Humanoid")
+      local userInputService = game:GetService("UserInputService")
 
-local canJumpInAir = false
+      -- Havadayken zıplama durumunu kontrol eden değişken
+      local canJumpInAir = false
 
-humanoid.StateChanged:Connect(function(oldState, newState)
-    if newState == Enum.HumanoidStateType.Freefall then
-        canJumpInAir = true
-    elseif newState == Enum.HumanoidStateType.Landed then
-        canJumpInAir = false
-    end
-end)
+      -- Humanoid'in durumlarını izleme
+      humanoid.StateChanged:Connect(function(oldState, newState)
+         if newState == Enum.HumanoidStateType.Freefall then
+            canJumpInAir = true
+         elseif newState == Enum.HumanoidStateType.Landed then
+            canJumpInAir = false
+         end
+      end)
 
-userInputService.InputBegan:Connect(function(input, isProcessed)
-    if isProcessed then return end
-    if input.KeyCode == Enum.KeyCode.Space then
-        if canJumpInAir then
-            humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-        end
-    end
-end)
-
+      -- Kullanıcı girişlerini izleme
+      userInputService.InputBegan:Connect(function(input, isProcessed)
+         if isProcessed then return end -- İşlenmiş girdileri atla
+         if input.KeyCode == Enum.KeyCode.Space then -- Space tuşu kontrolü
+            if canJumpInAir then
+               humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+            end
+         end
+      end)
    end,
 })
+
 
 local SliderValue = 10 -- Kaydırıcı değeri başlangıçta 10 olarak ayarlanıyor
 
