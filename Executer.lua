@@ -9,7 +9,7 @@ Rayfield:Notify({
    Image = "rewind",
 })
 
-Wait("10")
+
 
 Rayfield:Notify({
    Title = "thanks",
