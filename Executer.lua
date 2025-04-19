@@ -28,7 +28,7 @@ local windowName = "FGFS | Game"
 if gameId == 730951264 then
     windowName = "FGFS | The Maze"
 elseif gameId == 5777099015 then
-    windowName = "FGFS | Cheese Escape"
+    windowName = "FGFS | Cheese Escape "
 elseif gameId == 893973440 then
     windowName = "FGFS | Flee the Facility Mode"
 end
@@ -195,16 +195,15 @@ end)
 
 local Tab = Window:CreateTab("teleport", "rewind")
 
-
 local gameID = 730951264  
 local currentGameID = game.PlaceId  
-
 
 local options = {"Select teleport location"}
 
 if currentGameID == gameID then
-
     options = {"Piano", "Base", "Unknown Room", "Start", "Wood in Cave"}
+elseif currentGameID == 5777099015 then
+    options = {"End Position"}
 end
 
 local Dropdown = Tab:CreateDropdown({
@@ -223,12 +222,9 @@ local Dropdown = Tab:CreateDropdown({
            local character = player.Character
 
            if character then
-              
                local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
                if humanoidRootPart then
                    humanoidRootPart.CFrame = CFrame.new(-40, 15, -730) 
-                   
-                 
                    Rayfield:Notify({
                        Title = "Teleport Success",  
                        Content = "You have been teleported to the Piano.", 
@@ -243,12 +239,9 @@ local Dropdown = Tab:CreateDropdown({
            local character = player.Character
 
            if character then
-             
                local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
                if humanoidRootPart then
                    humanoidRootPart.CFrame = CFrame.new(-199, 15, -143) 
-                   
-                  
                    Rayfield:Notify({
                        Title = "Teleport Success", 
                        Content = "You have been teleported to the Base.", 
@@ -263,12 +256,9 @@ local Dropdown = Tab:CreateDropdown({
            local character = player.Character
 
            if character then
-             
                local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
                if humanoidRootPart then
                    humanoidRootPart.CFrame = CFrame.new(76, 16, -223) 
-                   
-                 
                    Rayfield:Notify({
                        Title = "Teleport Success",  
                        Content = "You have been teleported to the Unknown Room.",  
@@ -283,12 +273,9 @@ local Dropdown = Tab:CreateDropdown({
            local character = player.Character
 
            if character then
-            
                local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
                if humanoidRootPart then
                    humanoidRootPart.CFrame = CFrame.new(-235, -47, 36) 
-                   
-                  
                    Rayfield:Notify({
                        Title = "Teleport Success", 
                        Content = "You have been teleported to the Start location.",
@@ -303,15 +290,29 @@ local Dropdown = Tab:CreateDropdown({
            local character = player.Character
 
            if character then
-              
                local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
                if humanoidRootPart then
                    humanoidRootPart.CFrame = CFrame.new(191, -89, -226)  
-                   
-                 
                    Rayfield:Notify({
                        Title = "Teleport Success",  
                        Content = "You have been teleported to the Wood in Cave.",
+                       Duration = 6.5, 
+                       Image = "check", 
+                   })
+               end
+           end
+       elseif selectedOption == "End Position" then
+         
+           local player = game.Players.LocalPlayer
+           local character = player.Character
+
+           if character then
+               local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+               if humanoidRootPart then
+                   humanoidRootPart.CFrame = CFrame.new(288.92108154296875, -11.05103112670898, -122.98193359375)
+                   Rayfield:Notify({
+                       Title = "Teleport Success",  
+                       Content = "You have been teleported to the End Position.",
                        Duration = 6.5, 
                        Image = "check", 
                    })
@@ -328,7 +329,6 @@ local Dropdown = Tab:CreateDropdown({
        end
    end,
 })
-
 
 
 
