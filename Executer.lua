@@ -46,14 +46,14 @@ local Window = Rayfield:CreateWindow({
    DisableBuildWarnings = false,
 
    ConfigurationSaving = {
-      Enabled = false,
+      Enabled = true,
       FolderName = nil,
       FileName = "Big Hub"
    },
 
    Discord = {
-      Enabled = true,
-      Invite = "discord.gg/3bPwmSyAAX",
+      Enabled = false,
+      Invite = "",
       RememberJoins = true
    },
 
@@ -63,7 +63,7 @@ local Window = Rayfield:CreateWindow({
       Subtitle = "Key System",
       Note = "i like dark.",
       FileName = "FGFSKey",
-      SaveKey = false,
+      SaveKey = true,
       GrabKeyFromSite = false,
       Key = {"ilikedark"}
    }
